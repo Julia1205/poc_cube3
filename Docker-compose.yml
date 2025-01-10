@@ -1,0 +1,87 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - ./db/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+    networks:
+      backend_network:
+        aliases:
+          - mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: rootpassword
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      backend_network : 
+        aliases:
+          - phpmyadmin
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_NAME=app_db
+    depends_on:
+      - phpmyadmin
+    networks:
+      backend_network :
+        aliases:
+          - api
+    
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - API_URL=http://api:3000/api
+    depends_on:
+      - api
+    networks:
+      - backend_network
+
+#   frontend:
+#     build:
+#       context: ./frontend
+#       dockerfile: Dockerfile
+#     ports:
+#       - "8080:80"
+#     depends_on:
+#       - backend
+#     networks:
+#       - frontend_network
+
+networks:
+    # frontend_network
+  backend_network : 
+    driver: bridge
+
+# volumes:
+#   mysql_data:
