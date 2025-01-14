@@ -26,10 +26,15 @@ const {
   getVariantById,
   getVariantsByCategory,
   getVariantByName,
+  getVariantByArticle,
   updateVariant,
   deleteVariant,
   createVariant
 } = require ('../controllers/variants');
+
+const {
+  createUser
+} = require('../controllers/users');
 
 //test routes
 router.get('/test', testDBConnection);
@@ -58,6 +63,11 @@ router.get('/variants/name/:name', getVariantByName);
 router.put('/variant/:id/:newName/:newPrice/:newDesc/:newArticle/:newImage/:newStock', updateVariant);
 router.delete('/variant/:id', deleteVariant);
 router.post('/variant/:name/:price/:desc/:article/:image/:stock', createVariant);
+router.get('/variants/item/:articleId', getVariantByArticle);
+
+//user routes
+
+router.post('/addUser', createUser);
 
 
 

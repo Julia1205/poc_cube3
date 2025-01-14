@@ -18,8 +18,10 @@ async function getAllArticles(req, res) {
 }
 
 async function getArticlesByCategory (req, res) {
+  console.log(req.params);
+  category = req.params.categoryId;
   try {
-    const response = await axios.get(api+'/items').then((response) => {
+    const response = await axios.get(api+'/items/category/'+category).then((response) => {
       result = response.data;
       const articles = Object.values(result);
       const validArticles = article_model.areArticles(articles);

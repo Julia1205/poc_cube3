@@ -33,13 +33,13 @@ function getItemById(req, res) {
 
 function getItemsByCategory(req, res) {
     const categoryId = req.params.category;
+    console.log('getItemsByCategory : '+categoryId);
     try {
         query = "SELECT * FROM a_articles WHERE a_articles_category = ?";
         db.query(query, [categoryId], (err, result) => {
             if (err) {
                 res.status(404).json({ error: err.message });
             } else {
-                console.log(result);
                 console.log('Items retrieved:', result);
                 res.status(200).json(result);
             }

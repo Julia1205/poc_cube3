@@ -36,7 +36,6 @@ async function isExistingCategory(req, res) {
         });
     } catch (err) {
         res.status(500).send('Erreur lors de la récupération de la catégorie');
-        // console.log(err);
         console.log('non');
     }
 }

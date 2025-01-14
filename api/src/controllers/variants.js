@@ -49,6 +49,23 @@ function getVariantsByCategory(req, res) {
     }
 }
 
+function getVariantByArticle (req, res) {
+    const articleId = req.params.articleId;
+    console.log(req.params);
+    try {
+        db.query('SELECT * FROM a_variants WHERE a_variants_article = ?', [articleId], (err, result) => {
+            if (err) {
+                res.status(404).json({ error: err.message });
+            } else {
+                console.log('Item retrieved:', result);
+                res.status(200).json(result);
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 function getVariantByName(req, res) {
     const itemName = req.params.name;
     try {
@@ -136,6 +153,7 @@ module.exports = {
     getVariantById,
     getVariantsByCategory,
     getVariantByName,
+    getVariantByArticle,
     updateVariant,
     deleteVariant,
     createVariant
