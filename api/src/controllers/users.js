@@ -3,7 +3,7 @@ const db = require ('../config/db');  // Import database connection
 
 function createUser(req, res) {
     const user = req.body.user;
-    console.log(user);
+    console.log(req.body);
     // try {
     //     query = "START TRANSACTION";
     //     query += "INSERT INTO a_accounts (a_accounts_mail, a_accounts_pwd, a_accounts_name, a_accounts_firstname, a_accounts_city, a_accounts_zip, a_accounts_street, a_accounts_number, a_accounts_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";

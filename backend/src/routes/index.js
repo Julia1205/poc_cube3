@@ -8,6 +8,6 @@ router.get('/items', articleController.getAllArticles);
 router.get('/items/category/:categoryId', articleController.getArticlesByCategory);
 router.get('/categories', categoryController.getAllCategories);
 router.get('/category/:id', categoryController.isExistingCategory);
-router.post('/user', userController.addUser);
+router.post('/user/:user', userController.addUser);
 
 module.exports = router;
