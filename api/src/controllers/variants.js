@@ -147,6 +147,23 @@ function createVariant(req, res){
     }
 }
 
+function getRandomVariant(req, res) {
+    const number = parseInt(req.params.number);
+    const article = parseInt(req.params.article);
+    try {
+        db.query('SELECT * FROM a_variants WHERE a_article_id = ? ORDER BY RAND() LIMIT ?', [article, number], (err, result) => {
+            if (err) {
+                res.status(404).json({ error: err.message });
+            } else {
+                console.log('Items retrieved:', result);
+                res.status(200).json(result);
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 
 module.exports = {
     getAllVariants,
@@ -156,5 +173,6 @@ module.exports = {
     getVariantByArticle,
     updateVariant,
     deleteVariant,
-    createVariant
+    createVariant,
+    getRandomVariant
 };

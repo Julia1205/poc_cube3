@@ -34,9 +34,27 @@ async function getArticlesByCategory (req, res) {
   }
 }
 
+async function getRandomItems(req, res) {
+  console.log(req.params.number);
+  number = req.params.number;
+  try {
+    const response = await axios.get(api+'/randomItems/'+number).then((response) => {
+      result = response.data;
+      const articles = Object.values(result);
+      const validArticles = article_model.areArticles(articles);
+      console.log(validArticles);
+      res.json(validArticles);
+    });
+  } catch (err) {
+    res.status(500).send('Erreur lors de la récupération des items');
+    console.log(err);
+  }
+}
+
 
 
 module.exports = {
   getAllArticles,
-  getArticlesByCategory
+  getArticlesByCategory,
+  getRandomItems
 };

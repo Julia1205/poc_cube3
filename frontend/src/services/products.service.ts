@@ -17,5 +17,10 @@ export const productsService = {
   async getProduct(id: number) {
     const response = await api.get<Product>(`/products/${id}`);
     return response.data;
+  },
+
+  async getRandomProducts(number: number) {
+    const response = await api.get<Product[]>(`/products/random/${number}`);
+    return response.data;
   }
 };

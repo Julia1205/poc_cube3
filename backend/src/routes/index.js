@@ -9,5 +9,6 @@ router.get('/items/category/:categoryId', articleController.getArticlesByCategor
 router.get('/categories', categoryController.getAllCategories);
 router.get('/category/:id', categoryController.isExistingCategory);
 router.post('/user/:user', userController.addUser);
+router.get('/items/randomItems/:number', articleController.getRandomItems);
 
 module.exports = router;

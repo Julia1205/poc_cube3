@@ -1,7 +1,9 @@
 import axios from 'axios';
+require('dotenv').config();
+const BACKEND_URL = process.env.API_URL;
 
 const api = axios.create({
-  baseURL: 'http://backend:4000',
+  baseURL: BACKEND_URL,
   headers: {
     'Content-Type': 'application/json'
   }

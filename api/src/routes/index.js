@@ -11,7 +11,8 @@ const {
   getItemsByName,
   updateItem,
   createItem,
-  deleteItem
+  deleteItem,
+  getRandomItems
 } = require('../controllers/items');
 
 const {
@@ -36,6 +37,10 @@ const {
   createUser
 } = require('../controllers/users');
 
+const { 
+  getHomePage
+} = require('../controllers/home');
+
 //test routes
 router.get('/test', testDBConnection);
 
@@ -48,6 +53,7 @@ router.get('/items/name/:name', getItemsByName);
 router.put('/item/:id/:newName/:newPrice/:newCategory', updateItem);
 router.post('/item/:name/:price/:category', createItem);
 router.delete('/item/:id', deleteItem);
+// router.get('/randomItems/:number', getRandomItems);
 
 //category routes
 router.get('/categories', getAllCategories);
@@ -69,7 +75,9 @@ router.get('/variants/item/:articleId', getVariantByArticle);
 
 router.post('/addUser', createUser);
 
+// home routes 
 
+router.get('/:howMany', getHomePage);
 
 
 
