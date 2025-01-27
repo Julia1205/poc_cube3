@@ -53,7 +53,7 @@ router.get('/items/name/:name', getItemsByName);
 router.put('/item/:id/:newName/:newPrice/:newCategory', updateItem);
 router.post('/item/:name/:price/:category', createItem);
 router.delete('/item/:id', deleteItem);
-// router.get('/randomItems/:number', getRandomItems);
+router.get('/randomItems/:number', getRandomItems);
 
 //category routes
 router.get('/categories', getAllCategories);

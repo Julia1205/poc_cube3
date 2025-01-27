@@ -18,7 +18,20 @@ async function getVariantByArticle(req, res) {
     }
 }
 
+async function getHomePage(req, res) {
+    const howMany = parseInt(req.params.howMany);
+    try {
+        const response = await axios.get(api+'/'+howMany).then((response) => {
+            result = response.data;
+            res.status(200).json(result);
+        });
+    } catch (err) {
+        res.status(500).send('Erreur lors de la récupération des items');
+        console.log(err);
+    }
+}
+
 module.exports = {
-    getAllCategories,
-    isExistingCategory
+    getVariantByArticle,
+    getHomePage
 };

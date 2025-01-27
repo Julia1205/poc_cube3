@@ -124,20 +124,18 @@ function createItem(req, res){
 
 async function getRandomItems(howMany, req, res) {
     const number = parseInt(howMany);
-    try {
-        query = "SELECT * FROM a_articles ORDER BY RAND() LIMIT ?";
+    // console.log(number);
+    return new Promise((resolve, reject) => {        
+        const query = "SELECT * FROM a_articles ORDER BY RAND() LIMIT ?";
         db.query(query, [number], (err, result) => {
             if (err) {
-                res.status(404).json({ error: err.message });
+                console.error('Erreur lors de la récupération des items:', err);
+                reject(err);
             } else {
-                console.log('Items retrieved:', result);
-                return result;
-                res.status(200).json(result);
+                resolve(result);
             }
         });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+    });
 }
 
 module.exports = {

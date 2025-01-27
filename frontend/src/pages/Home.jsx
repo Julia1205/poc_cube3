@@ -1,26 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getRandomProducts } from '../services/products.service';
 
 const Home = () => {
   // Simulation d'une base de produits plus large
-  const allProducts = [
-    { id: 1, name: 'Smartphone XYZ', price: 699.99, image: 'phone.jpg', description: 'Dernier modèle avec appareil photo 108MP' },
-    { id: 2, name: 'Laptop Pro', price: 1299.99, image: 'laptop.jpg', description: 'Processeur dernière génération' },
-    { id: 3, name: 'Casque Audio', price: 199.99, image: 'headphones.jpg', description: 'Réduction de bruit active' },
-    { id: 4, name: 'Montre Connectée', price: 299.99, image: 'smartwatch.jpg', description: 'Suivi santé avancé' },
-    { id: 5, name: 'Tablette Ultra', price: 449.99, image: 'tablet.jpg', description: 'Écran 4K HDR' },
-    { id: 6, name: 'Enceinte Bluetooth', price: 89.99, image: 'speaker.jpg', description: 'Son immersif 360°' },
-    { id: 7, name: 'Caméra Sport', price: 249.99, image: 'camera.jpg', description: 'Étanche 30m' },
-    { id: 8, name: 'Clavier Gaming', price: 129.99, image: 'keyboard.jpg', description: 'Switches mécaniques' },
-  ];
+  // const allProducts = [
+  //   { id: 1, name: 'Smartphone XYZ', price: 699.99, image: 'phone.jpg', description: 'Dernier modèle avec appareil photo 108MP' },
+  //   { id: 2, name: 'Laptop Pro', price: 1299.99, image: 'laptop.jpg', description: 'Processeur dernière génération' },
+  //   { id: 3, name: 'Casque Audio', price: 199.99, image: 'headphones.jpg', description: 'Réduction de bruit active' },
+  //   { id: 4, name: 'Montre Connectée', price: 299.99, image: 'smartwatch.jpg', description: 'Suivi santé avancé' },
+  //   { id: 5, name: 'Tablette Ultra', price: 449.99, image: 'tablet.jpg', description: 'Écran 4K HDR' },
+  //   { id: 6, name: 'Enceinte Bluetooth', price: 89.99, image: 'speaker.jpg', description: 'Son immersif 360°' },
+  //   { id: 7, name: 'Caméra Sport', price: 249.99, image: 'camera.jpg', description: 'Étanche 30m' },
+  //   { id: 8, name: 'Clavier Gaming', price: 129.99, image: 'keyboard.jpg', description: 'Switches mécaniques' },
+  // ];
 
   // Sélection aléatoire de 5 produits
-  const getRandomProducts = (products, count) => {
-    const shuffled = [...products].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
-  };
+  // const getRandomProducts = (products, count) => {
+  //   const shuffled = [...products].sort(() => 0.5 - Math.random());
+  //   return shuffled.slice(0, count);
+  // };
 
-  const featuredProducts = getRandomProducts(allProducts, 5);
+  const featuredProducts = getRandomProducts(5);
 
   return (
     <div className="container mx-auto px-4">
@@ -31,17 +32,17 @@ const Home = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
         {featuredProducts.map(product => (
-          <div key={product.id} className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-105">
+          <div key={product.a_variants_id} className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-105">
             <div className="p-4">
               <div className="bg-gray-200 h-48 mb-4 rounded flex items-center justify-center">
-                <span className="text-gray-500">Image du produit</span>
+                <span className="text-gray-500">{product.a_variants_image}</span>
               </div>
-              <h3 className="text-xl font-bold mb-2">{product.name}</h3>
-              <p className="text-gray-600 mb-4">{product.description}</p>
+              <h3 className="text-xl font-bold mb-2">{product.a_variants_name}</h3>
+              <p className="text-gray-600 mb-4">{product.a_variants_description}</p>
               <div className="flex justify-between items-center">
-                <span className="text-2xl font-bold text-blue-600">{product.price}€</span>
+                <span className="text-2xl font-bold text-blue-600">{product.a_variants_price}€</span>
                 <Link
-                  to={`/products/${product.id}`}
+                  to={`/products/${product.a_variants_id}`}
                   className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
                 >
                   Voir détails

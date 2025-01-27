@@ -22,5 +22,10 @@ export const productsService = {
   async getRandomProducts(number: number) {
     const response = await api.get<Product[]>(`/products/random/${number}`);
     return response.data;
+  },
+
+  async getHomePageProducts(howMany: number) {
+    const response = await api.get<Product[]>(`/getHome/${howMany}`);
+    return response.data;
   }
 };
