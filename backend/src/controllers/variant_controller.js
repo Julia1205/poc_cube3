@@ -19,7 +19,9 @@ async function getVariantByArticle(req, res) {
 }
 
 async function getHomePage(req, res) {
+    // console.log('ici');
     const howMany = parseInt(req.params.howMany);
+    console.log(howMany);
     try {
         const response = await axios.get(api+'/'+howMany).then((response) => {
             result = response.data;

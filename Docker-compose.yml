@@ -66,17 +66,26 @@ services:
       - api
     networks:
       - backend_network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4000/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    build: ./frontend
     ports:
-      - "8080:80"
+      - "8080:8080"
     environment:
-      - BACKEND_URL=http://backend:3000/backend
+      - PORT = 8080
+      - REACT_APP_BACKEND_URL=http://localhost:4000/backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     depends_on:
       - backend
+      # backend : 
+      #   condition: service_healthy
     networks:
       - frontend_network
 
