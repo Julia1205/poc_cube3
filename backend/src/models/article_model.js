@@ -2,31 +2,22 @@ class article_model {
     constructor() {
     }
 
-
-    static areArticles(items) {
-        console.log('ici');
-        if(this.isValidArticle(items)){
-            return items;
-        }else{
-            console.log('false');
-        }
+    static areArticles(articles) {
+        let validArticles = [];
+        articles.forEach(article => {
+            if (article.name && article.description && article.price && article.category_id && article.sport_id) {
+                validArticles.push(article);
+            }
+        });
+        return validArticles;
     }
 
-    static async isValidArticle(item) {
-        let id;
-        let name
-        let price;
-        let category;
-        //if there is no id make it null, if there is check if it is a number
-        item.a_articles_id != null ? id = item.a_articles_id : id = null;
-        name = item.a_articles_name;
-        price = item.a_articles_price;
-        category = item.a_articles_category;
-        if ((typeof name == 'string') && (typeof price == 'number') && (typeof category == 'number')) {
-                return true;
-            }else{
-                return false;
-            }
+    static isArticle(article) {
+        if (article.name && article.description && article.price && article.category_id && article.sport_id) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 

@@ -1,13 +1,13 @@
 const db = require('../config/db'); // Import the database connection
 
-function getAllCategories (req, res){
+function getAllSports (req, res){
     try{
-        query = "SELECT * FROM categories;";
+        query = "SELECT * FROM sports;";
         db.query(query, (err, result) => {
             if (err) {
               res.status(404).json({ error: err.message });
             }else{
-              console.log('Catégories récupérés:', result);
+              console.log('Sports récupérés:', result);
               res.status(200).json(result);
             }
           });
@@ -17,15 +17,15 @@ function getAllCategories (req, res){
     }
 
 
-function getCategoryByID (req, res){
+function getSportByID (req, res){
     const articleId = req.params.id;
     console.log(req.params);
     try {
-        db.query('SELECT * FROM categories WHERE id = ?', [articleId], (err, result) => {
+        db.query('SELECT * FROM sports WHERE id = ?', [articleId], (err, result) => {
             if (err) {
                 res.status(404).json({ error: err.message });
             } else {
-                console.log('Article retrieved:', result);
+                console.log('Sport retrieved:', result);
                 res.status(200).json(result);
             }
         });
@@ -34,17 +34,17 @@ function getCategoryByID (req, res){
     }
 }
 
-function getCategorieByName (req, res) {
-    const articleName = "%" + req.params.name + "%";
+function getSportByName (req, res) {
+    const sportName = "%" + req.params.name + "%";
     console.log(articleName);
     try{
-        query = "SELECT * FROM categories WHERE name LIKE ?;";
+        query = "SELECT * FROM sports WHERE name LIKE ?;";
         console.log(query);
         db.query(query, [articleName], (err, result) => {
             if(err){
                 res.status(404).json({error: err.message});
             }else{
-                console.log('Article retrived:', result);
+                console.log('Sport retrived:', result);
                 res.status(200).json(result);
             }
         });
@@ -53,17 +53,17 @@ function getCategorieByName (req, res) {
     }
 }
 
-function deleteCategorie(req, res){
+function deleteSport(req, res){
     const articleId = req.params.id;
     const articleName = req.params.name;
     try {
-        query = "DELETE FROM categories WHERE id = ? AND name = ?";
+        query = "DELETE FROM sports WHERE id = ? AND name = ?";
         db.query(query, [articleId, articleName], (err, result) => {
             if (err) {
                 res.status(404).json({ error: err.message });
             }else{
-                console.log('Categorie supprimé:', result);
-                res.status(200).json({message: 'Categorie supprimée avec succès' });
+                console.log('Sport supprimé:', result);
+                res.status(200).json({message: 'Sport supprimé avec succès' });
             }
         });
     } catch (error) {
@@ -71,19 +71,19 @@ function deleteCategorie(req, res){
     }  
 }
 
-function updateCategory (req, res){
+function updateSport (req, res){
     const newName = req.params.newName;
-    const updatedArticle = req.params.id;
+    const updatedSport = req.params.id;
     console.log(newName);
     console.log(updatedCategory);
     try {
-        query = "UPDATE categories SET name = ? WHERE id = ?";
-        db.query(query, [newName, updatedArticle], (err, result) => {
+        query = "UPDATE sports SET name = ? WHERE id = ?";
+        db.query(query, [newName, updatedSport], (err, result) => {
           if (err) {
             res.status(404).json({ error: err.message });
           }else{
-            console.log('Catégorie mise à jour:', result);
-            res.status(200).json({message: 'Catégorie mise à jour avec succès' });
+            console.log('Sport mise à jour:', result);
+            res.status(200).json({message: 'Sport mis à jour avec succès' });
           }
         }
       );
@@ -92,16 +92,16 @@ function updateCategory (req, res){
     }  
 }
 
-function addCategory (req, res){
+function addSport (req, res){
     const articleName = req.params.name;
     try{
-        query = "INSERT INTO categories (name) VALUES (?)";
+        query = "INSERT INTO sports (name) VALUES (?)";
         db.query(query, [articleName], (err, result) => {
           if (err) {
             res.status(404).json({ error: err.message });
           }else{
-            console.log('Catégorie ajouté:', result);
-            res.status(200).json({message: 'Catégorie ajouté avec succès' });
+            console.log('Sport ajouté:', result);
+            res.status(200).json({message: 'Sport ajouté avec succès' });
           }
         });
     } catch (error) {
@@ -110,10 +110,10 @@ function addCategory (req, res){
 }
 
 module.exports = {
-  getAllCategories,
-  getCategoryByID,
-  getCategorieByName,
-  deleteCategorie,
-  updateCategory,
-  addCategory
+  getAllSports,
+  getSportByID,
+  getSportByName,
+  deleteSport,
+  updateSport,
+  addSport
 };

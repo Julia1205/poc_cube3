@@ -4,83 +4,97 @@ const {
   testDBConnection
 } = require('../controllers/tests');
 
-const {
-  getAllItems,
-  getItemById,
-  getItemsByCategory,
-  getItemsByName,
-  updateItem,
-  createItem,
-  deleteItem,
-  getRandomItems
-} = require('../controllers/items');
+const {getHomePage} = require('../controllers/home');
 
-const {
-  createCategory,
-  updateCategory,
-  deleteCategory,
-  getAllCategories
+const { 
+  getAllArticles,
+  getArticleByID,
+  getArticleByName,
+  getArticleByCategory,
+  getArticleBySport,
+  deleteArticle,
+  updateArticle,
+  addArticle
+} = require('../controllers/articles');
+
+
+const { 
+getAllCategories,
+getCategoryByID,
+getCategorieByName,
+deleteCategorie,
+updateCategory,
+addCategory
 } = require('../controllers/categories');
 
 const {
-  getAllVariants,
-  getVariantById,
-  getVariantsByCategory,
-  getVariantByName,
-  getVariantByArticle,
-  updateVariant,
-  deleteVariant,
-  createVariant
-} = require ('../controllers/variants');
+  getAllSports,
+  getSportByID,
+  getSportByName,
+  deleteSport,
+  updateSport,
+  addSport
+} = require('../controllers/sports');
 
 const {
-  createUser
+  createUser,
+  getUser,
+  connectUser,
+  updateUser
 } = require('../controllers/users');
 
-const { 
-  getHomePage
-} = require('../controllers/home');
+const{
+  getAllVariants,
+  getVariantByID,
+  getVariantByName,
+  getVariantByCategory,
+  getVariantBySport,
+  deleteVariant,
+  updateVariant,
+  addVariant
+} = require('../controllers/variants');
 
-//test routes
-router.get('/test', testDBConnection);
+router.get('/home/:howMany', getHomePage);
 
 
-//items routes
-router.get('/items', getAllItems);
-router.get('/item/:id', getItemById);
-router.get('/items/category/:category', getItemsByCategory);
-router.get('/items/name/:name', getItemsByName);
-router.put('/item/:id/:newName/:newPrice/:newCategory', updateItem);
-router.post('/item/:name/:price/:category', createItem);
-router.delete('/item/:id', deleteItem);
-router.get('/randomItems/:number', getRandomItems);
+router.get('/articles', getAllArticles);
+router.get('/articleId/:id', getArticleByID);
+router.get('/articleName/:name', getArticleByName);
+router.get('/articleCategory/:id', getArticleByCategory);
+router.get('/articleSport/:id', getArticleBySport);
+router.delete('/deleteArticle/:id', deleteArticle);
+router.put('/putArticle/:id/:name', updateArticle);
+router.post('/addArticle/:article', addArticle);
 
-//category routes
+
 router.get('/categories', getAllCategories);
-router.put('/category/:id/newName/:newName', updateCategory);
-router.post('/category/:category', createCategory);
-router.delete('/category/:id', deleteCategory);
+router.get('/categoryId/:id', getCategoryByID);
+router.get('/categoryName/:name', getCategorieByName);
+router.delete('/deleteCategory/:id/:name', deleteCategorie);
+router.put('/putCategory/:id/:name', updateCategory);
+router.post('/addCategory/:category', addCategory);
 
-//variants routes
+router.get('/sports', getAllSports);
+router.get('/sportId/:id', getSportByID);
+router.get('/sportName/:name', getSportByName);
+router.delete('/deleteSport/:id/:name', deleteSport);
+router.put('/putSport/:id/:name',updateSport);
+router.post('/addSport/:sport', addSport);
+
+
+router.post('/addUser/:user', createUser);
+router.get('/user/:email', getUser);
+router.get('/connectUser/:email', connectUser);
+router.put('/putUser/:user', updateUser);
+
 router.get('/variants', getAllVariants);
-router.get('/variant/:id', getVariantById);
-router.get('/variants/category/:category', getVariantsByCategory);
-router.get('/variants/name/:name', getVariantByName);
-router.put('/variant/:id/:newName/:newPrice/:newDesc/:newArticle/:newImage/:newStock', updateVariant);
-router.delete('/variant/:id', deleteVariant);
-router.post('/variant/:name/:price/:desc/:article/:image/:stock', createVariant);
-router.get('/variants/item/:articleId', getVariantByArticle);
-
-//user routes
-
-router.post('/addUser', createUser);
-
-// home routes 
-
-router.get('/:howMany', getHomePage);
+router.get('/variantId', getVariantByID);
+router.get('/variantName', getVariantByName);
+router.get('/variantCategory:/category', getVariantByCategory);
+router.get('/variantSport', getVariantBySport);
+router.delete('/deleteVariant/:id', deleteVariant);
+router.put('/putVariant/:id', updateVariant);
+router.post('/addVariant:/variant', addVariant);
 
 
-
-
-//export router
 module.exports = router;

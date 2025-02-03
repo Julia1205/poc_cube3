@@ -1,325 +1,128 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Hôte : mysql
--- Généré le : ven. 10 jan. 2025 à 12:32
--- Version du serveur : 8.0.40
--- Version de PHP : 8.2.8
+CREATE DATABASE IF NOT EXISTS ecommerce_sport;
+USE ecommerce_sport;
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+-- Table des utilisateurs
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role ENUM('user', 'gestionnaire', 'admin') DEFAULT 'user' NOT NULL,
+    address VARCHAR(255) NULL,
+    phone_number VARCHAR(20) NULL,
+    CONSTRAINT unique_user_id UNIQUE (id)
+);
 
+-- Table des derniers mots de passe des utilisateurs
+CREATE TABLE user_password_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT unique_password_history_id UNIQUE (id)
+);
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+-- Table des catégories
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL,
+    CONSTRAINT unique_category_id UNIQUE (id)
+);
 
---
--- Base de données : `app_db`
---
+-- Table des sports
+CREATE TABLE sports (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL,
+    CONSTRAINT unique_sport_id UNIQUE (id)
+);
 
--- --------------------------------------------------------
+-- Table des articles
+CREATE TABLE articles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    image_url VARCHAR(255),
+    category_id INT,
+    sport_id INT,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
+    FOREIGN KEY (sport_id) REFERENCES sports(id) ON DELETE SET NULL,
+    CONSTRAINT unique_article_id UNIQUE (id)
+);
 
---
--- Structure de la table `at_account_type`
---
+-- Table des variantes d'articles
+CREATE TABLE variants (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    article_id INT NOT NULL,
+    variant_name VARCHAR(100),
+    image_url VARCHAR(255),
+    FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
+    CONSTRAINT unique_variant_id UNIQUE (id)
+);
 
-CREATE TABLE `at_account_type` (
-  `at_account_type_id` int NOT NULL,
-  `at_account_type_name` varchar(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- Table du panier
+CREATE TABLE cart (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    article_id INT NOT NULL,
+    variant_id INT DEFAULT NULL,
+    quantity INT NOT NULL DEFAULT 1,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
+    FOREIGN KEY (variant_id) REFERENCES variants(id) ON DELETE SET NULL,
+    CONSTRAINT unique_cart_id UNIQUE (id)
+);
 
--- --------------------------------------------------------
+-- Trigger pour enregistrer les anciens mots de passe
+DELIMITER $$
+CREATE TRIGGER before_user_password_update
+BEFORE UPDATE ON users
+FOR EACH ROW
+BEGIN
+    IF OLD.password_hash <> NEW.password_hash THEN
+        INSERT INTO user_password_history (user_id, password_hash)
+        VALUES (OLD.id, OLD.password_hash);
+    END IF;
+END $$
+DELIMITER ;
 
---
--- Structure de la table `a_accounts`
---
+-- Trigger pour vérifier l'unicité de l'email
+DELIMITER $$
+CREATE TRIGGER before_user_insert
+BEFORE INSERT ON users
+FOR EACH ROW
+BEGIN
+    IF (SELECT COUNT(*) FROM users WHERE email = NEW.email) > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Erreur: Cet email est déjà utilisé';
+    END IF;
+END $$
+DELIMITER ;
 
-CREATE TABLE `a_accounts` (
-  `a_accounts_id` int NOT NULL,
-  `a_accounts_mail` varchar(80) NOT NULL,
-  `a_accounts_pwd` varchar(255) NOT NULL,
-  `a_accounts_name` varchar(15) NOT NULL,
-  `a_accounts_firstname` varchar(50) DEFAULT NULL,
-  `a_accounts_city` varchar(50) DEFAULT NULL,
-  `a_accounts_zip` int DEFAULT NULL,
-  `a_accounts_street` varchar(100) DEFAULT NULL,
-  `a_accounts_number` int DEFAULT NULL,
-  `a_accounts_type` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- Insérer des utilisateurs
+INSERT INTO users (first_name, last_name, email, password_hash, role, address, phone_number) VALUES
+('Alice', 'Martin', 'alice@example.com', 'hashed_password1', 'user', '123 rue du Sport, Paris', '0612345678'),
+('Bob', 'Dupont', 'bob@example.com', 'hashed_password2', 'gestionnaire', '456 avenue du Stade, Lyon', '0698765432'),
+('Admin', 'Super', 'admin@example.com', 'hashed_admin_password', 'admin', NULL, NULL);
 
--- --------------------------------------------------------
+-- Insérer des catégories
+INSERT INTO categories (name) VALUES ('Chaussures'), ('Vêtements'), ('Accessoires');
 
---
--- Structure de la table `a_articles`
---
+-- Insérer des sports
+INSERT INTO sports (name) VALUES ('Football'), ('Basketball'), ('Running'), ('Tennis');
 
-CREATE TABLE `a_articles` (
-  `a_articles_id` int NOT NULL,
-  `a_articles_name` varchar(50) NOT NULL,
-  `a_articles_price` decimal(5,2) NOT NULL,
-  `a_articles_category` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- Insérer des articles
+INSERT INTO articles (name, description, price, image_url, category_id, sport_id) VALUES
+('Chaussures de foot Adidas', 'Chaussures performantes pour terrains synthétiques', 79.99, 'chaussure_foot.jpg', 1, 1),
+('Maillot NBA Lakers', "Maillot officiel de l'équipe des Lakers", 59.99, 'maillot_lakers.jpg', 2, 2),
+('Montre GPS Running', 'Montre connectée avec suivi de la performance', 129.99, 'montre_running.jpg', 3, 3);
 
---
--- Déchargement des données de la table `a_articles`
---
-
-INSERT INTO `a_articles` (`a_articles_id`, `a_articles_name`, `a_articles_price`, `a_articles_category`) VALUES
-(2, 'Veste de kung-fu', 22.90, 2);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `a_order_items`
---
-
-CREATE TABLE `a_order_items` (
-  `a_order_items_id` int NOT NULL,
-  `a_order_items_order` int NOT NULL,
-  `a_order_items_variant` int NOT NULL,
-  `a_order_items_amount` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `a_variants`
---
-
-CREATE TABLE `a_variants` (
-  `a_variants_id` int NOT NULL,
-  `a_variants_name` varchar(50) NOT NULL,
-  `a_variants_price` decimal(5,2) NOT NULL,
-  `a_variants_description` text NOT NULL,
-  `a_variants_article` int NOT NULL,
-  `a_variants_image` varchar(255) DEFAULT NULL,
-  `a_variants_stock` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Déchargement des données de la table `a_variants`
---
-
-INSERT INTO `a_variants` (`a_variants_id`, `a_variants_name`, `a_variants_price`, `a_variants_description`, `a_variants_article`, `a_variants_image`, `a_variants_stock`) VALUES
-(3, 'Veste kung-fu', 8.90, 'testdec', 2, 'test2.jpg', 56);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cat_categories`
---
-
-CREATE TABLE `cat_categories` (
-  `cat_category_id` int NOT NULL,
-  `cat_category_name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Déchargement des données de la table `cat_categories`
---
-
-INSERT INTO `cat_categories` (`cat_category_id`, `cat_category_name`) VALUES
-(1, 'Chaussures'),
-(2, 'Veste');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `c_orders`
---
-
-CREATE TABLE `c_orders` (
-  `c_orders_id` int NOT NULL,
-  `c_orders_user` int NOT NULL,
-  `c_orders_date` date NOT NULL,
-  `c_orders_status` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `p_password`
---
-
-CREATE TABLE `p_password` (
-  `p_password_id` int NOT NULL,
-  `p_password_user` int NOT NULL,
-  `p_password_1` varchar(255) DEFAULT NULL,
-  `p_password_2` varchar(255) DEFAULT NULL,
-  `p_password_3` varchar(255) DEFAULT NULL,
-  `p_password_4` varchar(255) DEFAULT NULL,
-  `p_password_5` varchar(255) DEFAULT NULL,
-  `p_password_6` varchar(255) DEFAULT NULL,
-  `p_password_7` varchar(255) DEFAULT NULL,
-  `p_password_8` varchar(255) DEFAULT NULL,
-  `p_password_9` varchar(255) DEFAULT NULL,
-  `p_password_10` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Index pour les tables déchargées
---
-
---
--- Index pour la table `at_account_type`
---
-ALTER TABLE `at_account_type`
-  ADD PRIMARY KEY (`at_account_type_id`),
-  ADD UNIQUE KEY `account_type` (`at_account_type_id`);
-
---
--- Index pour la table `a_accounts`
---
-ALTER TABLE `a_accounts`
-  ADD PRIMARY KEY (`a_accounts_id`),
-  ADD UNIQUE KEY `accounts` (`a_accounts_id`),
-  ADD KEY `a_accounts_type` (`a_accounts_type`);
-
---
--- Index pour la table `a_articles`
---
-ALTER TABLE `a_articles`
-  ADD PRIMARY KEY (`a_articles_id`),
-  ADD UNIQUE KEY `article` (`a_articles_id`),
-  ADD KEY `a_articles_category` (`a_articles_category`);
-
---
--- Index pour la table `a_order_items`
---
-ALTER TABLE `a_order_items`
-  ADD PRIMARY KEY (`a_order_items_id`),
-  ADD UNIQUE KEY `order_items` (`a_order_items_id`),
-  ADD KEY `a_order_items_order` (`a_order_items_order`),
-  ADD KEY `a_order_items_variant` (`a_order_items_variant`);
-
---
--- Index pour la table `a_variants`
---
-ALTER TABLE `a_variants`
-  ADD PRIMARY KEY (`a_variants_id`),
-  ADD KEY `a_variants_article` (`a_variants_article`);
-
---
--- Index pour la table `cat_categories`
---
-ALTER TABLE `cat_categories`
-  ADD PRIMARY KEY (`cat_category_id`),
-  ADD UNIQUE KEY `category` (`cat_category_id`);
-
---
--- Index pour la table `c_orders`
---
-ALTER TABLE `c_orders`
-  ADD PRIMARY KEY (`c_orders_id`),
-  ADD UNIQUE KEY `orders` (`c_orders_id`),
-  ADD KEY `c_orders_user` (`c_orders_user`);
-
---
--- Index pour la table `p_password`
---
-ALTER TABLE `p_password`
-  ADD PRIMARY KEY (`p_password_id`),
-  ADD UNIQUE KEY `p_password` (`p_password_id`),
-  ADD KEY `p_password_user` (`p_password_user`);
-
---
--- AUTO_INCREMENT pour les tables déchargées
---
-
---
--- AUTO_INCREMENT pour la table `at_account_type`
---
-ALTER TABLE `at_account_type`
-  MODIFY `at_account_type_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `a_accounts`
---
-ALTER TABLE `a_accounts`
-  MODIFY `a_accounts_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `a_articles`
---
-ALTER TABLE `a_articles`
-  MODIFY `a_articles_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT pour la table `a_order_items`
---
-ALTER TABLE `a_order_items`
-  MODIFY `a_order_items_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `a_variants`
---
-ALTER TABLE `a_variants`
-  MODIFY `a_variants_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT pour la table `cat_categories`
---
-ALTER TABLE `cat_categories`
-  MODIFY `cat_category_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT pour la table `c_orders`
---
-ALTER TABLE `c_orders`
-  MODIFY `c_orders_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `p_password`
---
-ALTER TABLE `p_password`
-  MODIFY `p_password_id` int NOT NULL AUTO_INCREMENT;
-
---
--- Contraintes pour les tables déchargées
---
-
---
--- Contraintes pour la table `a_accounts`
---
-ALTER TABLE `a_accounts`
-  ADD CONSTRAINT `a_accounts_ibfk_1` FOREIGN KEY (`a_accounts_type`) REFERENCES `at_account_type` (`at_account_type_id`);
-
---
--- Contraintes pour la table `a_articles`
---
-ALTER TABLE `a_articles`
-  ADD CONSTRAINT `a_articles_ibfk_1` FOREIGN KEY (`a_articles_category`) REFERENCES `cat_categories` (`cat_category_id`);
-
---
--- Contraintes pour la table `a_order_items`
---
-ALTER TABLE `a_order_items`
-  ADD CONSTRAINT `a_order_items_ibfk_1` FOREIGN KEY (`a_order_items_order`) REFERENCES `c_orders` (`c_orders_id`),
-  ADD CONSTRAINT `a_order_items_ibfk_2` FOREIGN KEY (`a_order_items_variant`) REFERENCES `a_variants` (`a_variants_id`);
-
---
--- Contraintes pour la table `a_variants`
---
-ALTER TABLE `a_variants`
-  ADD CONSTRAINT `a_variants_ibfk_1` FOREIGN KEY (`a_variants_article`) REFERENCES `a_articles` (`a_articles_id`);
-
---
--- Contraintes pour la table `c_orders`
---
-ALTER TABLE `c_orders`
-  ADD CONSTRAINT `c_orders_ibfk_1` FOREIGN KEY (`c_orders_user`) REFERENCES `a_accounts` (`a_accounts_id`);
-
---
--- Contraintes pour la table `p_password`
---
-ALTER TABLE `p_password`
-  ADD CONSTRAINT `p_password_ibfk_1` FOREIGN KEY (`p_password_user`) REFERENCES `a_accounts` (`a_accounts_id`);
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- Insérer des variantes d\'articles
+INSERT INTO variants (article_id, variant_name, image_url) VALUES
+(1, 'Taille 42', 'chaussure_foot_42.jpg'),
+(1, 'Taille 44', 'chaussure_foot_44.jpg'),
+(2, 'Taille M', 'maillot_lakers_m.jpg'),
+(2, 'Taille L', 'maillot_lakers_l.jpg');
