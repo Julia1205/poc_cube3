@@ -9,7 +9,7 @@ async function getHomePage(req, res) {
         res.status(404).json({ error: err.message });
       }else{
         console.log('Articles récupérés:', result);
-        res.status(200).json({message: 'Articles récupérés avec succès' });
+        res.status(200).json(result);
       }
     });
   } catch (error) {

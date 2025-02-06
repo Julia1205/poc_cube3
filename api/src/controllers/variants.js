@@ -90,6 +90,23 @@ function getVariantBySport(req, res){
 
 }
 
+function getVariantByArticle(req, res){
+    const article = parseInt(req.params.article);
+    try{
+        const query = "SELECT * FROM variants WHERE article_id = ?;";
+        db.query(query, [article], (err, result) => {
+            if(err){
+                res.status(404).json({error: err.message});
+            }else{
+                console.log('Variant retrived:', result);
+                res.status(200).json(result);
+            }
+        });
+    } catch(error){
+        res.status(500).json({error: error.message});
+    }
+}
+
 function deleteVariant(req, res){
     const variantId = req.params.id;
     const variantName = req.params.name;
@@ -152,6 +169,7 @@ module.exports = {
     getVariantByName,
     getVariantByCategory,
     getVariantBySport,
+    getVariantByArticle,
     deleteVariant,
     updateVariant,
     addVariant

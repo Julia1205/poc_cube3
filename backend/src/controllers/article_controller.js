@@ -4,7 +4,7 @@ const article_model = require('../models/article_model');
 
 async function getAllArticles(req, res) {
   try {
-    const response = await axios.get(api+'/items').then((response) => {
+    const response = await axios.get(api+'/articles').then((response) => {
       result = response.data;
       const articles = Object.values(result);
       const validArticles = article_model.areArticles(articles);
@@ -12,49 +12,79 @@ async function getAllArticles(req, res) {
       res.json(validArticles);
     });
   } catch (err) {
-    res.status(500).send('Erreur lors de la récupération des items');
+    res.status(500).send('Erreur lors de la récupération des articles');
     console.log(err);
   }
 }
 
-async function getArticlesByCategory (req, res) {
-  console.log(req.params);
-  category = req.params.categoryId;
-  try {
-    const response = await axios.get(api+'/items/category/'+category).then((response) => {
+async function getArticleByID(req, res){
+  try{
+    const articleId = parseInt(req.params.id);
+    const response = await axios.get(api+'/articleId/'+articleId).then((response) => {
       result = response.data;
-      const articles = Object.values(result);
-      const validArticles = article_model.areArticles(articles);
-      console.log(validArticles);
-      res.json(validArticles);
+      const article = Object.values(result);
+      const validArticle = article_model.areArticles(article);
+      console.log(validArticle);
+      res.status(200).json(validArticle);
     });
-  } catch (err) {
-    res.status(500).send('Erreur lors de la récupération des items');
+  } catch (err){
+    res.status(500).send('Erreur lors de la récupération de l\'article');
     console.log(err);
   }
 }
 
-async function getRandomItems(req, res) {
-  console.log(req.params.number);
-  number = req.params.number;
-  try {
-    const response = await axios.get(api+'/randomItems/'+number).then((response) => {
+async function getArticleByName(req, res){
+  try{
+    const articleName = String(req.params.name);
+    const response = await axios.get(api+'/articleName/'+articleName).then((response) => {
       result = response.data;
-      const articles = Object.values(result);
-      const validArticles = article_model.areArticles(articles);
-      console.log(validArticles);
-      res.json(validArticles);
+      const article = Object.values(result);
+      const validArticle = article_model.areArticles(article);
+      console.log(validArticle);
+      res.status(200).json(validArticle);
     });
-  } catch (err) {
-    res.status(500).send('Erreur lors de la récupération des items');
+  } catch (err){
+    res.status(500).send('Erreur lors de la récupération de l\'article');
     console.log(err);
   }
 }
 
+async function getArticleByCategory(req, res){
+  try{
+    const category = parseInt(req.params.id);
+    const response = await axios.get(api+'/articleCategory/'+category).then((response) => {
+      result = response.data;
+      const article = Object.values(result);
+      const validArticle = article_model.areArticles(article);
+      console.log(validArticle);
+      res.status(200).json(validArticle);
+    });
+  } catch (err){
+    res.status(500).send('Erreur lors de la récupération de l\'article');
+    console.log(err);
+  }
+}
 
+async function getArticleBySport (req, res){
+  try{
+    const sport = parseInt(req.params.id);
+    const response = await axios.get(api+'/articleSport/'+sport).then((response) => {
+      result = response.data;
+      const article = Object.values(result);
+      const validArticle = article_model.areArticles(article);
+      console.log(validArticle);
+      res.status(200).json(validArticle);
+    });
+  } catch (err){
+    res.status(500).send('Erreur lors de la récupération de l\'article');
+    console.log(err);
+  }
+}
 
 module.exports = {
   getAllArticles,
-  getArticlesByCategory,
-  getRandomItems
+  getArticleByID,
+  getArticleByName,
+  getArticleByCategory,
+  getArticleBySport
 };

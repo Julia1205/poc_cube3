@@ -20,7 +20,7 @@ function getAllArticles(req, res) {
 }
 
 function getArticleByID(req, res) {
-    const articleId = parseInt(req.params.id, 10);
+    const articleId = parseInt(req.params.id);
     if (isNaN(articleId)) {
       return res.status(400).json({ error: 'Invalid article ID' });
     }

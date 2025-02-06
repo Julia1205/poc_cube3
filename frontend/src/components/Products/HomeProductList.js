@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { fetchProducts } from '../../utils/api';
+import { fetchHomeProducts } from '../../utils/api';
 import { useCart } from '../../contexts/CartContext';
-import { Link } from 'react-router-dom'
 
-const ProductList = () => {
+const HomeProductList = () => {
   const [products, setProducts] = useState([]);
   const { addToCart } = useCart();
 
   useEffect(() => {
     const loadProducts = async () => {
-      const products = await fetchProducts();
-      setProducts(products);
+      const homeProducts = await fetchHomeProducts(3);
+      setProducts(homeProducts);
     };
     loadProducts();
   }, []);
@@ -19,8 +18,8 @@ const ProductList = () => {
     <div class="row g-4 align-item-center">
       {products.map(product => (
           <div class="col-md-4">
-            <Link className="card" id="card" to={`/product/${product.id}`} key={product.id}>
-              <img src={require('../../assets/img/'+product.image_url)} class="card-img-top" alt={product.name} />
+            <div class="card" id="card" key={product.id}>
+              <img src={product.image_url} class="card-img-top" alt={product.name} />
               <div class="card-body">
                 <h5 class="card-title">{product.name}</h5>
                 <p>{product.price} €</p>
@@ -28,11 +27,11 @@ const ProductList = () => {
                   Ajouter au panier
                 </button>
               </div>
-            </Link>
+            </div>
           </div>
       ))}
     </div>
   );
 };
 
-export default ProductList;
+export default HomeProductList;

@@ -6,7 +6,17 @@ const backendAPI = axios.create({
 
 export const fetchHomeProducts = async (count) => {
   try {
-    const response = await backendAPI.get(`/getHome/${count}`);
+    const response = await backendAPI.get(`/home/${count}`);
+    return response.data;
+  } catch (error) {
+    console.error('Erreur de récupération des produits', error);
+    return [];
+  }
+};
+
+export const fetchProducts = async () => {
+  try{
+    const response = await backendAPI.get('/articles');
     return response.data;
   } catch (error) {
     console.error('Erreur de récupération des produits', error);
@@ -46,10 +56,21 @@ export const addProduct = async (productData) => {
 
 export const fetchProductDetail = async (productId) => {
   try {
-    const response = await backendAPI.get(`/product/${productId}`);
+    const response = await backendAPI.get(`/articleId/${productId}`);
     return response.data;
   } catch (error) {
     console.error('Erreur de récupération du produit', error);
+    return null;
+  }
+};
+
+export const fetchVariant = async (productId) => {
+  try{
+    const response = await backendAPI.get('/variantArticle/'+productId);
+    return response.data;
+
+  } catch(error){
+    console.error('Erreur de récupération des variants du produit', error);
     return null;
   }
 };

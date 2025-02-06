@@ -5,7 +5,8 @@ class article_model {
     static areArticles(articles) {
         let validArticles = [];
         articles.forEach(article => {
-            if (article.name && article.description && article.price && article.category_id && article.sport_id) {
+            if ( (typeof article.name === 'string') && (typeof article.description === 'string') && (typeof parseFloat(article.price) === 'number') && (typeof article.category_id === 'number') && (typeof article.sport_id === 'number') ) {
+                // article.image_url = './src/assets/images'+article.image_url;
                 validArticles.push(article);
             }
         });
@@ -13,7 +14,8 @@ class article_model {
     }
 
     static isArticle(article) {
-        if (article.name && article.description && article.price && article.category_id && article.sport_id) {
+        console.log(typeof article[0].price);
+        if ( (typeof article.name === 'string') && (typeof article.description === 'string') && (typeof article.price === 'number') && (typeof article.category_id === 'number') && (typeof article.sport_id === 'number') ) {
             return true;
         } else {
             return false;

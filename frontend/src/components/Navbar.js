@@ -3,35 +3,25 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
-    <nav className="bg-gray-800 p-4 shadow-lg">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-white text-xl font-bold">
-          Mon Application
-        </Link>
-        
-        <div className="flex space-x-6">
-          <Link 
-            to="/" 
-            className="text-gray-300 hover:text-white transition-colors duration-200"
-          >
-            Accueil
-          </Link>
-          <Link 
-            to="/products" 
-            className="text-gray-300 hover:text-white transition-colors duration-200"
-          >
-            Produits
-          </Link>
-          <Link 
-            to="/contact" 
-            className="text-gray-300 hover:text-white transition-colors duration-200"
-          >
-            Contact
-          </Link>
-        </div>
-      </div>
-    </nav>
-  );
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <Link className="navbar-brand" to="/">Breizh'Sport</Link>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <Link className="nav-link active" aria-current="page" to="/">Accueil</Link>
+        </li>
+        <li class="nav-item">
+          <Link className="nav-link" to="/produits">Produits</Link>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>  
+);
 };
 
 export default Navbar;

@@ -49,6 +49,7 @@ const{
   getVariantByName,
   getVariantByCategory,
   getVariantBySport,
+  getVariantByArticle,
   deleteVariant,
   updateVariant,
   addVariant
@@ -88,10 +89,11 @@ router.get('/connectUser/:email', connectUser);
 router.put('/putUser/:user', updateUser);
 
 router.get('/variants', getAllVariants);
-router.get('/variantId', getVariantByID);
-router.get('/variantName', getVariantByName);
-router.get('/variantCategory:/category', getVariantByCategory);
-router.get('/variantSport', getVariantBySport);
+router.get('/variantId/:id', getVariantByID);
+router.get('/variantName/:name', getVariantByName);
+router.get('/variantArticle/:article', getVariantByArticle);
+router.get('/variantCategory/:category', getVariantByCategory);
+router.get('/variantSport/:sport', getVariantBySport);
 router.delete('/deleteVariant/:id', deleteVariant);
 router.put('/putVariant/:id', updateVariant);
 router.post('/addVariant:/variant', addVariant);
