@@ -25,7 +25,7 @@ async function getArticleByID(req, res){
       const article = Object.values(result);
       const validArticle = article_model.areArticles(article);
       console.log(validArticle);
-      res.status(200).json(validArticle);
+      res.status(200).json(validArticle[0]);
     });
   } catch (err){
     res.status(500).send('Erreur lors de la récupération de l\'article');

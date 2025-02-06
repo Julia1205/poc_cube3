@@ -57,6 +57,7 @@ export const addProduct = async (productData) => {
 export const fetchProductDetail = async (productId) => {
   try {
     const response = await backendAPI.get(`/articleId/${productId}`);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Erreur de récupération du produit', error);
