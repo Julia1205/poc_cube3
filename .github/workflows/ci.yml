@@ -8,13 +8,13 @@ on:
 
 jobs:
 
-  quality:
+  frontend:
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v3
-    - name: Run PHPStan analysis
-      run: echo "phpstan"
+    - name: Frontend
+      run: npm test
 
   build:
     runs-on: ubuntu-latest

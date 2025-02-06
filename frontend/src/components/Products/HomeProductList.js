@@ -13,7 +13,6 @@ const HomeProductList = () => {
     };
     loadProducts();
   }, []);
-  // console.log('../../assets/img/'+product.image_url);
 
   return (
     <div class="row g-4 align-item-center">
