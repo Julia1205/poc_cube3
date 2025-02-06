@@ -1,26 +1,31 @@
-name: CI
+name: CI Pipeline
 
 on:
   push:
-    branches: [ "**" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "**" ]
+    branches:
+      - main
 
 jobs:
-
-  frontend:
+  frontend-tests:
+    name: Run Frontend Tests
     runs-on: ubuntu-latest
-    
+    defaults:
+      run:
+        working-directory: frontend
     steps:
-    - uses: actions/checkout@v3
-    - name: Frontend
-      run: cd frontend
-      run: npm test
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-  build:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v3
-    - name: docker
-      run: echo "build"
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
