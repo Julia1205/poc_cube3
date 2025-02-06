@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchProductDetail } from '../../utils/api';
-// import { useCart } from '../../contexts/CartContext';
 
 const ProductDetail = () => {
   const [product, setProduct] = useState([]);
-  // const [variants, setVariants] = useState([]);
   const { id } = useParams();
-  // const { addToCart } = useCart();
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -16,21 +13,7 @@ const ProductDetail = () => {
     };
     loadProduct();
 
-    // console.log('../../assets/img/'+product.image_url);
-    
-    // const loadVariants = async () => {
-      //   const variantsData = await fetchVariant(id);
-      //   setVariants(variantsData);
-      // }
-      // loadVariants();
     }, [id]);
-    // console.log('product ' + product);
-    // console.log('product.image_url ' + product.image_url);
-    // for (const [key, value] of Object.entries(product)) {
-    //   console.log(`${key}: ${value}`);
-    // }    // console.log(require('../../assets/img/'+product.image_url));
-    
-    // console.log(product.image_url);
     if (product.length == 0){
       return <div>Chargement...</div>
     }else{

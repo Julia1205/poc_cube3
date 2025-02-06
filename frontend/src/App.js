@@ -22,7 +22,6 @@ function App() {
       <Navbar />
       <AuthProvider>
         <CartProvider>
-          {/* <BrowserRouter> */}
             <Routes>
               <Route path="/" element={<HomeProductList />} />
               <Route path="/produits" element={<ProductList />} />
@@ -33,7 +32,6 @@ function App() {
               <Route path="/admin/add-product" element={<AddProduct />} />
               <Route path="/cart" element={<Cart />} />
             </Routes>
-          {/* </BrowserRouter> */}
         </CartProvider>
       </AuthProvider>
     </div>

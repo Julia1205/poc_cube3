@@ -45,7 +45,6 @@ services:
       - DB_HOST=mysql
       - DB_USER=user
       - DB_PASSWORD=password
-      # - DB_NAME=app_db
       - DB_NAME=ecommerce_sport
     depends_on:
       mysql:
@@ -84,9 +83,8 @@ services:
       - ./frontend:/app
       - /app/node_modules
     depends_on:
-      - backend
-      # backend : 
-      #   condition: service_healthy
+      mysql:
+        condition: service_healthy
     networks:
       - frontend_network
 
@@ -95,6 +93,3 @@ networks:
     driver: bridge
   backend_network : 
     driver: bridge
-
-# volumes:
-#   mysql_data:
