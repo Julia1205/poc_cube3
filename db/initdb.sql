@@ -119,6 +119,16 @@ INSERT INTO articles (name, description, price, image_url, category_id, sport_id
 ('Chaussures de foot Adidas', 'Chaussures performantes pour terrains synthétiques', 79.99, 'chaussure_foot.jpg', 1, 1),
 ('Maillot NBA Lakers', "Maillot officiel de l'équipe des Lakers", 59.99, 'maillot_lakers.jpg', 2, 2),
 ('Montre GPS Running', 'Montre connectée avec suivi de la performance', 129.99, 'montre_running.jpg', 3, 3);
+('Maillot Running', 'Maillot de course pour homme', 59.99, 'maillot_course_homme.png', 2, 3),
+('Pantalon Running', 'Pantalon de course pour homme', 69.99, 'pantalon_course.jpg', 2, 3),
+('Sac Hydratation Running', "Sac d'hydtration avec flasque", 19.99, 'sac_hydratation.jpg', 3, 3),
+('Chaussure Running', 'Chaussure de course à pied asics', 119.99, 'asics_chaussure.jpg', 1, 3),
+('Ballon de foot', 'Ballon de football Adidas', 29.99, 'ballon_foot.jpg', 3, 1),
+('Short de foot', 'Short de football Nike', 49.99, 'short_foot_homme.jpeg', 2, 1),
+('Maillot de foot', 'Maillot de football blanc', 69.99, 'Maillot_foot_homme.png', 2, 1),
+('Chaussure de Basketball', 'Chaussure de basketball Air Jordan', 139.99, 'chaussure_basket.png', 1, 2),
+('Ballon de Basketball', 'Ballon de Basketball', 39.99, 'ballon_basket.jpg', 3, 2),
+('Short de NBA Lakers', 'Short de NBA Lakers', 79.99, 'short_nba.jpeg', 2, 2);
 
 -- Insérer des variantes d\'articles
 INSERT INTO variants (article_id, variant_name, image_url) VALUES
