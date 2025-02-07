@@ -15,15 +15,15 @@ const HomeProductList = () => {
   }, []);
 
   return (
-    <div class="row g-4 align-item-center">
+    <div className="row g-4 align-item-center">
       {products.map(product => (
-          <div class="col-md-4">
-            <div class="card" id="card" key={product.id}>
-              <img src={require('../../assets/img/'+product.image_url)} class="card-img-top" alt={product.name} />
-              <div class="card-body">
-                <h5 class="card-title">{product.name}</h5>
+          <div className="col-md-4">
+            <div className="card" id="card" key={product.id}>
+              <img src={require('../../assets/img/'+product.image_url)} className="card-img-top" alt={product.name} />
+              <div className="card-body">
+                <h5 className="card-title">{product.name}</h5>
                 <p>{product.price} €</p>
-                <button class="btn btn-primary" onClick={() => addToCart(product)}>
+                <button className="btn btn-primary" onClick={() => addToCart(product)}>
                   Ajouter au panier
                 </button>
               </div>
