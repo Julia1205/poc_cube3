@@ -20,7 +20,7 @@ async function getAllCategories(req, res) {
 async function isExistingCategory(req, res) {
     // categoryNameToFind = req.body.name;
     let categoryNameToFind = req.params.name;
-    categoryIdToFind = req.params.id;
+    let categoryIdToFind = req.params.id;
     console.log(categoryIdToFind);
     try{
         const response = await axios.get(api+'/categories').then((response) => {
