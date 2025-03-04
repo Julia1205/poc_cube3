@@ -34,7 +34,7 @@ jobs:
         run: npm test > ../frontend-test-report.txt
 
       - name: Upload frontend test report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: frontend-test-report
           path: frontend-test-report.txt
@@ -48,7 +48,7 @@ jobs:
         working-directory: backend
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -62,7 +62,7 @@ jobs:
         run: npm test > ../backend-test-report.txt
 
       - name: Upload backend test report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: backend-test-report
           path: backend-test-report.txt
