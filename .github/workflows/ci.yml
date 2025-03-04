@@ -3,13 +3,16 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - main
+      - tests
+      - dev-*
   pull_request:
     branches:
-      - main
+      - tests
+      - dev-*
 
 jobs:
   frontend-tests:
+    if: github.ref == 'refs/heads/tests'
     name: Run Frontend Tests
     runs-on: ubuntu-latest
     defaults:
@@ -27,9 +30,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm test
+      - name: Run tests and save report
+        run: npm test > ../frontend-test-report.txt
+
+      - name: Upload frontend test report
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-test-report
+          path: frontend-test-report.txt
+
   backend-tests: 
+    if: github.ref == 'refs/heads/tests'
     name: Run Backend Tests
     runs-on: ubuntu-latest
     defaults:
@@ -47,5 +58,22 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm test
+      - name: Run tests and save report
+        run: npm test > ../backend-test-report.txt
+
+      - name: Upload backend test report
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend-test-report
+          path: backend-test-report.txt
+
+  other-actions:
+    if: startsWith(github.ref, 'refs/heads/dev-')
+    name: Run Other Actions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run other tasks
+        run: echo "Executing other actions on a dev branch."
