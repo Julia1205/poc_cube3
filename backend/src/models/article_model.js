@@ -13,7 +13,6 @@ class article_model {
     }
 
     static isArticle(article) {
-        console.log(typeof article[0].price);
         if ( (typeof article.name === 'string') && (typeof article.description === 'string') && (typeof article.price === 'number') && (typeof article.category_id === 'number') && (typeof article.sport_id === 'number') ) {
             return true;
         } else {
