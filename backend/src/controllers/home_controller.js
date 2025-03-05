@@ -5,8 +5,8 @@ const article_model = require('../models/article_model');
 async function getHomePage (req, res) {
     const howMany = parseInt(req.params.howMany);
     try {
-        const response = await axios.get(api+'/home/'+howMany).then((response) => {
-        result = response.data;
+        await axios.get(api+'/home/'+howMany).then((response) => {
+        let result = response.data;
         const articles = Object.values(result);
         const validArticles = article_model.areArticles(articles);
         console.log(validArticles);

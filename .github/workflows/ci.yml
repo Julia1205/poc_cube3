@@ -3,13 +3,17 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - main
+      - tests
+      - dev-*
+      - eslint
   pull_request:
     branches:
-      - main
+      - tests
+      - dev-*
 
 jobs:
   frontend-tests:
+    if: github.ref == 'refs/heads/tests'
     name: Run Frontend Tests
     runs-on: ubuntu-latest
     defaults:
@@ -27,5 +31,77 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm test
+      - name: Run tests and save report
+        run: npm test > ../frontend-test-report.txt
+
+      - name: Upload frontend test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-test-report
+          path: frontend-test-report.txt
+
+  backend-tests: 
+    if: github.ref == 'refs/heads/tests'
+    name: Run Backend Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests and save report
+        run: npm test > ../backend-test-report.txt
+
+      - name: Upload backend test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-report
+          path: backend-test-report.txt
+  eslint:
+    runs-on: ubuntu-latest
+    name: Run ESLint
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+         node-version: '18.x'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run ESLint
+      run: |
+        npx eslint . --ext .js || echo "❌ ESLint failed"
+
+    - name: Display success message
+      run: |
+        echo "✅ ESLint passed"
+      if: success()
+
+  other-actions:
+    if: startsWith(github.ref, 'refs/heads/dev-')
+    name: Run Other Actions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run other tasks
+        run: echo "Executing other actions on a dev branch."

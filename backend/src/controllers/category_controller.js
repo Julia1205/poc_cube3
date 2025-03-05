@@ -4,8 +4,8 @@ const category_model = require('../models/category_model');
 
 async function getAllCategories(req, res) {
   try {
-    const response = await axios.get(api+'/categories').then((response) => {
-      result = response.data;
+    await axios.get(api+'/categories').then((response) => {
+      let result = response.data;
       const categories = Object.values(result);
       const validCategories = category_model.areCategories(categories);
       console.log(validCategories);
@@ -20,17 +20,18 @@ async function getAllCategories(req, res) {
 async function isExistingCategory(req, res) {
     // categoryNameToFind = req.body.name;
     let categoryNameToFind = req.params.name;
-    categoryIdToFind = req.params.id;
+    let categoryIdToFind = req.params.id;
     console.log(categoryIdToFind);
     try{
-        const response = await axios.get(api+'/categories').then((response) => {
-            result = response.data;
+        await axios.get(api+'/categories').then((response) => {
+            let result = response.data;
             console.log(result);
             for (let key in result) {
                 console.log(result[key].cat_category_id);
                 if (result[key].cat_category_id === categoryIdToFind && result[key].cat_category_name === categoryNameToFind) {
                   console.log(`Found the value ${categoryNameToFind} with key ${categoryIdToFind}`);
                 }
+            const validCategory = category_model.isValidCategory(Object.values(result))
             res.json(validCategory);
             }
         });

@@ -4,8 +4,8 @@ const article_model = require('../models/article_model');
 
 async function getAllArticles(req, res) {
   try {
-    const response = await axios.get(api+'/articles').then((response) => {
-      result = response.data;
+    await axios.get(api+'/articles').then((response) => {
+      let result = response.data;
       const articles = Object.values(result);
       const validArticles = article_model.areArticles(articles);
       console.log(validArticles);
@@ -20,8 +20,8 @@ async function getAllArticles(req, res) {
 async function getArticleByID(req, res){
   try{
     const articleId = parseInt(req.params.id);
-    const response = await axios.get(api+'/articleId/'+articleId).then((response) => {
-      result = response.data;
+    await axios.get(api+'/articleId/'+articleId).then((response) => {
+      let result = response.data;
       const article = Object.values(result);
       const validArticle = article_model.areArticles(article);
       console.log(validArticle);
@@ -36,8 +36,8 @@ async function getArticleByID(req, res){
 async function getArticleByName(req, res){
   try{
     const articleName = String(req.params.name);
-    const response = await axios.get(api+'/articleName/'+articleName).then((response) => {
-      result = response.data;
+    await axios.get(api+'/articleName/'+articleName).then((response) => {
+      let result = response.data;
       const article = Object.values(result);
       const validArticle = article_model.areArticles(article);
       console.log(validArticle);
@@ -52,8 +52,8 @@ async function getArticleByName(req, res){
 async function getArticleByCategory(req, res){
   try{
     const category = parseInt(req.params.id);
-    const response = await axios.get(api+'/articleCategory/'+category).then((response) => {
-      result = response.data;
+    await axios.get(api+'/articleCategory/'+category).then((response) => {
+      let result = response.data;
       const article = Object.values(result);
       const validArticle = article_model.areArticles(article);
       console.log(validArticle);
@@ -68,8 +68,8 @@ async function getArticleByCategory(req, res){
 async function getArticleBySport (req, res){
   try{
     const sport = parseInt(req.params.id);
-    const response = await axios.get(api+'/articleSport/'+sport).then((response) => {
-      result = response.data;
+    await axios.get(api+'/articleSport/'+sport).then((response) => {
+      let result = response.data;
       const article = Object.values(result);
       const validArticle = article_model.areArticles(article);
       console.log(validArticle);
