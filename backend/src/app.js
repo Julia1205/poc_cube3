@@ -20,7 +20,7 @@ app.use(cors(
 // Set up routes
 app.use('/backend', routes);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     console.error(err);
     res.status(500).send('Erreur serveur');
   });

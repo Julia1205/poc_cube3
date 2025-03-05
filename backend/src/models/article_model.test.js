@@ -1,4 +1,5 @@
-import ArticleUtils from './article_model'; // Remplace par le bon chemin
+// import ArticleUtils from './article_model'; 
+const ArticleUtils = require('./article_model');
 
 describe("Tests pour areArticles et isArticle", () => {
     
