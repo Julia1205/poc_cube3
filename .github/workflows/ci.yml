@@ -5,6 +5,7 @@ on:
     branches:
       - tests
       - dev-*
+      - eslint
   pull_request:
     branches:
       - tests
@@ -83,7 +84,7 @@ jobs:
 
       - name: Run ESLint # Etape 4 : Exécuter ESLint pour vérifier la complexité cyclomatique
         run: npx eslint . --ext .js
-        
+
   other-actions:
     if: startsWith(github.ref, 'refs/heads/dev-')
     name: Run Other Actions
