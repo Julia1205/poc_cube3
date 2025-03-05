@@ -69,10 +69,10 @@ jobs:
           path: backend-test-report.txt
   eslint:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x] 
+    name: Run ESLint
+    defaults:
+      run:
+        working-directory: backend
 
     steps:
     - name: Checkout code
@@ -81,7 +81,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: ${{ matrix.node-version }}
+         node-version: '18.x'
 
     - name: Install dependencies
       run: npm install
