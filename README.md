@@ -37,5 +37,12 @@ Bonnes pratiques à suivre dans ce projet :
 - Le frontend ne sert qu'à afficher les donnéees,
 - L'API ne sert qu'à récupérer les données.
 
+Lancement des tests : 
+1) Dans le terminal se rendre dans la partie souhaitée : frontend par exemple
+2) Lancer la commande 'npm test' pour les tests unitaires et fonctionnels,
+   la commande 'npx eslint .' pour les tests ESLint.
+3) L'ensemble des tests sont intégrés dans la CI github à chaque push sur les branches principales
+
+
 
 
