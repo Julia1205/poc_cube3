@@ -66,7 +66,24 @@ jobs:
         with:
           name: backend-test-report
           path: backend-test-report.txt
+  build:
+    runs-on: ubuntu-latest # Utiliser la dernière version d'Ubuntu comme environnement
 
+    steps:
+      - name: Checkout code # Etape 1 : Récupérer le code du dépôt
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js # Etape 2 : Configurer Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14' # Version de Node.js à utiliser
+
+      - name: Install dependencies # Etape 3 : Installer les dépendances npm
+        run: npm install
+
+      - name: Run ESLint # Etape 4 : Exécuter ESLint pour vérifier la complexité cyclomatique
+        run: npx eslint . --ext .js
+        
   other-actions:
     if: startsWith(github.ref, 'refs/heads/dev-')
     name: Run Other Actions

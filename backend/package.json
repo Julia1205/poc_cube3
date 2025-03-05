@@ -15,6 +15,8 @@
     "devDependencies": {
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.2.0",
+        "eslint": "^8.57.1",
+        "eslint-plugin-cyclomatic-complexity": "^2.0.11",
         "jest": "^27.5.1",
         "react-scripts": "^5.0.1"
     }
