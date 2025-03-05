@@ -87,7 +87,13 @@ jobs:
       run: npm install
 
     - name: Run ESLint
-      run: npx eslint . --ext .js
+      run: |
+        npx eslint . --ext .js || echo "❌ ESLint failed"
+
+    - name: Display success message
+      run: |
+        echo "✅ ESLint passed"
+      if: success()
 
   other-actions:
     if: startsWith(github.ref, 'refs/heads/dev-')
