@@ -3,11 +3,13 @@ name: CI Pipeline
 on:
   push:
     branches:
+      - main
       - tests
       - dev-*
       - eslint
   pull_request:
     branches:
+      - main
       - tests
       - dev-*
 
