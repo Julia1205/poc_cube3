@@ -69,7 +69,9 @@ jobs:
           path: backend-test-report.txt
   build:
     runs-on: ubuntu-latest # Utiliser la dernière version d'Ubuntu comme environnement
-
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
     steps:
       - name: Checkout code # Etape 1 : Récupérer le code du dépôt
         uses: actions/checkout@v2
