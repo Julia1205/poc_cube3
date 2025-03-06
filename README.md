@@ -35,7 +35,13 @@ Bonnes pratiques à suivre dans ce projet :
 - Les fonctions métiers et autres méthodes se réalisent dans le backend,
 - La récupération des données se réalise dans l'API,
 - Le frontend ne sert qu'à afficher les donnéees,
-- L'API ne sert qu'à récupérer les données.
+- L'API ne sert qu'à récupérer et à enregistrer les données,
+- Respecter la séparation des responsabilités : Chaque composant doit avoir une seule responsabilité,
+- Éviter de stocker des données sensibles : exemple ne jamais stocker de tokens JWT dans localStorage,
+- Protéger contre les injections SQL/NoSQL : Toujours utiliser des requêtes préparées,
+- Exécuter les tests et linting automatiquement avant chaque déploiement,
+- Mettre à jour les tests et la CI dès que nécessaire,
+- Ne jamais court-circuiter les tests 
 
 Lancement des tests : 
 1) Dans le terminal se rendre dans la partie souhaitée : frontend par exemple
