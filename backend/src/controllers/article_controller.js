@@ -67,6 +67,7 @@ async function getArticleByCategory(req, res){
 
 async function getArticleBySport (req, res){
   try{
+    let toto = 'toto';
     const sport = parseInt(req.params.id);
     await axios.get(api+'/articleSport/'+sport).then((response) => {
       let result = response.data;
