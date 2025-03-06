@@ -15,7 +15,6 @@ on:
 
 jobs:
   frontend-tests:
-    if: github.ref == 'refs/heads/tests'
     name: Run Frontend Tests
     runs-on: ubuntu-latest
     defaults:
@@ -43,7 +42,6 @@ jobs:
           path: frontend-test-report.txt
 
   backend-tests: 
-    if: github.ref == 'refs/heads/tests'
     name: Run Backend Tests
     runs-on: ubuntu-latest
     defaults:
@@ -90,7 +88,7 @@ jobs:
 
     - name: Run ESLint
       run: |
-        npx eslint . --ext .js || echo "❌ ESLint failed"
+        npx eslint . --ext .js
 
     - name: Display success message
       run: |
